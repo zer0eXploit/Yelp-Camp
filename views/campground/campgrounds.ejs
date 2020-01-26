@@ -1,0 +1,45 @@
+<% include ../partials/header.ejs %>
+
+<div class="container-fluid mt-3">
+    <div class="jumbotron jumbotron-fluid rounded">
+        <div class="container">
+            <h2 class="">YelpCamp CampGrounds</h2>
+            <p class="">
+                This is a place where people share their campground photos!
+            </p>
+            <a 
+                href = "/campgrounds/new" 
+                class="text-decoration-none text-white btn btn-dark"
+            > 
+                Add New CampGround 
+            </a>
+        </div> 
+    </div>
+
+    <div class="row d-flex flex-wrap">
+        <% data.forEach(function(campGround){ %>
+            <div class="col-md-3 col-sm-6 my-3"> 
+                <div class="img-thumbnail p-0">
+                    <img 
+                        src = "<%= campGround.imageUrl %>" 
+                        srcset = "<%= campGround.imageUrl %>" 
+                        alt = "<%= campGround.name %>" 
+                        class="img-fluid rounded-top"
+                    />
+                    <div class="text-center my-2">
+                        <%= campGround.name %>
+                    </div>
+                    <div class = "text-center">
+                        <a 
+                            href = "/campgrounds/<%= campGround._id %>"
+                            class = "btn btn-block btn-outline-dark"
+                            >
+                            View More Info
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+<% include ../partials/footer.ejs %>
