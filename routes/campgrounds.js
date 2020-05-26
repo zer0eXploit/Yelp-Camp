@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
     } else {
       res.render("campground/campgrounds", {
         title: "CampGrounds",
-        data: allCampGrounds
+        data: allCampGrounds,
       });
     }
   });
@@ -20,18 +20,20 @@ router.post("/", middleWare.isLoggedIn, (req, res) => {
   let campName = req.body.name;
   let imgUrl = req.body.url;
   let description = req.body.description;
+  let location = req.body.location;
   let author = {
     id: req.user._id,
-    username: req.user.username
+    username: req.user.username,
   };
   let newCampGroundData = {
     name: campName,
     imageUrl: imgUrl,
     description: description,
-    author: author
+    location: location,
+    author: author,
   };
 
-  Campground.create(newCampGroundData, err => {
+  Campground.create(newCampGroundData, (err) => {
     if (err) {
       console.log(err);
     } else {
@@ -55,7 +57,7 @@ router.get("/:id", (req, res) => {
       } else {
         res.render("campground/campGroundInfo", {
           title: "CampDetails",
-          data: foundCampGround
+          data: foundCampGround,
         });
       }
     });
@@ -68,7 +70,7 @@ router.get("/:id/edit", middleWare.checkCampgroundOwnership, (req, res) => {
     else {
       res.render("campground/editCamp", {
         title: `Edit ${foundCampground.name}`,
-        data: foundCampground
+        data: foundCampground,
       });
     }
   });
@@ -87,7 +89,7 @@ router.put("/:id", middleWare.checkCampgroundOwnership, (req, res) => {
 // Destroy Route
 
 router.delete("/:id", middleWare.checkCampgroundOwnership, (req, res) => {
-  Campground.findByIdAndRemove(req.params.id, err => {
+  Campground.findByIdAndRemove(req.params.id, (err) => {
     if (err) console.log(err);
     else res.redirect("/campgrounds");
   });
