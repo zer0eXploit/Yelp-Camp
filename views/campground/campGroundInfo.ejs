@@ -1,142 +1,151 @@
 <% include ../partials/header.ejs %>
 
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-md-3 mt-1">
-                <p class="lead"> Yelp Camp </p>
-                <div class="list-group">
-                    <li class="list-group-item active">General Information</li>
-                    <li class="list-group-item">Info 2</li>
-                    <li class="list-group-item">Info 3</li>
-                </div>
-                <div class = "row">
-                    <div class = "col-12">
-                        <div class="container-fluid p-0">
-                            <div class="gmap_canvas">
-                                <iframe 
-                                    width="322" 
-                                    height="300" 
-                                    id="gmap_canvas" 
-                                    src="https://maps.google.com/maps?q=Massachusetts%20Institute%20of%20Technology&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-                                </iframe>
-                            </div>
-                            <style>
-                                .mapouter{position:relative;text-align:right;}.gmap_canvas {overflow:hidden;background:none!important;}
-                            </style>
-                        </div>
-                    </div>
-                </div>
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-3 mt-1">
+      <p class="lead">Yelp Camp</p>
+      <div class="list-group">
+        <li class="list-group-item active">General Information</li>
+        <li class="list-group-item">Info 2</li>
+        <li class="list-group-item">Info 3</li>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="container-fluid p-0">
+            <div class="gmap_canvas">
+              <iframe
+                width="322"
+                height="300"
+                id="gmap_canvas"
+                src="https://maps.google.com/maps?q=<%= data.location %>&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                frameborder="0"
+                scrolling="no"
+                marginheight="0"
+                marginwidth="0"
+              >
+              </iframe>
             </div>
-            <div class="col-md-9 mt-1">
-                <div class="img-thumbnail p-0">
-                    <img class="img-fluid w-100 rounded-top" src=" <%= data.imgUrl %> " srcset=" <%= data.imageUrl %> " alt=" <%= data.name %> " />
-                    <div class="d-flex justify-content-between mt-2 px-2">
-                        <div class="">
-                            <div class="text-left">
-                                <a class="text-decoration-none" href="#">
-                                    <%= data.name %>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="figure-caption">
-                            <div class="text-right">
-                                $ 9.99 / night
-                            </div>
-                        </div>
-                    </div>
-                    <% if(!currentUser){ %>
-                        <a href="/login" class="my-3 mx-3 btn btn-sm btn-success">   
-                            Login to Edit </a
-                    >
-                <%  }  else {  %> 
-
-                           <% if(data.author.id.equals(currentUser._id)){ %>
-                                <a 
-                                    href = "/campgrounds/<%= data._id %>/edit"
-                                    class = "my-3 mx-3 btn btn-sm btn-success"
-                                >   
-                                        Edit Post </a
-                                >
-                                <form class = "d-inline-block" 
-                                    action = "/campgrounds/<%= data._id %>?_method=DELETE" 
-                                    method = "POST"
-                                >
-                                    <button 
-                                        type = "submit"
-                                        class = "my-3 mx-3 btn btn-sm btn-outline-danger"
-                                    >
-                                        Delete </button
-                                    >
-                                </form>
-                           <% }  %>
-                <%   }  %>
-
-                <div>
-                    <p class = "my-3 px-3"> 
-                        <%= data.description %>
-                    </p>
-                    <p class = "my-3 px-3">
-                       <em>Posted by : <%= data.author.username %></em>
-                    </p>
-                </div>
-            </div>
-            <% if(data.comments[0]){ %>
-            <div class = "mt-2">
-                <a
-                    href = "/campgrounds/<%= data._id %>/comments/new"
-                    class = "btn btn-sm btn-block btn-danger d-inline-block"
-                >
-                    Add a Comment </a
-                >
-            </div>
-            <% } %>
-            <div class = "bg-light my-2 rounded-lg p-2 border">
-            <h4 class = "my-3"> Comments : </h4>
-            <% if(!data.comments[0]){ %>
-                <p class="text-center"> No comments yet. </p>
-                <a
-                    href = "/campgrounds/<%= data._id %>/comments/new"
-                    class = "btn btn-sm btn-block btn-danger d-inline-block"
-                >
-                    Add a first comment? </a
-                >
-               <% } else { %>
-                <% data.comments.forEach(function(comment){ %>
-
-                    <strong>
-                        <%= comment.author.username %>
-                    </strong>
-                        <em> wrote : </em>
-                <p class ="ml-3">
-                    <%= comment.text %>
-                </p> 
-                <div> 
-                <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
-                    <a class = "btn btn-sm btn-info"
-                        href = "/campgrounds/<%= data._id %>/comments/<%= comment._id %>/edit"
-                    >
-                        Edit </a
-                    >
-                    <form 
-                        action = "/campgrounds/<%= data._id %>/comments/<%= comment._id %>?_method=DELETE"
-                        class = "d-inline-block"
-                        method = "POST"
-                    >
-                        <button type = "submit" 
-                            class = "btn btn-sm btn-outline-danger"
-                        >
-                            Delete </button
-                        >
-                    
-                    </form>
-                    <% } %>
-                </div>
-                <hr>
-
-                <% }); } %>
-            </div>
+            <style>
+              .mapouter {
+                position: relative;
+                text-align: right;
+              }
+              .gmap_canvas {
+                overflow: hidden;
+                background: none !important;
+              }
+            </style>
+          </div>
         </div>
+      </div>
     </div>
+    <div class="col-md-9 mt-1">
+      <div class="img-thumbnail p-0">
+        <img
+          class="img-fluid w-100 rounded-top"
+          src=" <%= data.imgUrl %> "
+          srcset=" <%= data.imageUrl %> "
+          alt=" <%= data.name %> "
+        />
+        <div class="d-flex justify-content-between mt-2 px-2">
+          <div class="">
+            <div class="text-left">
+              <a class="text-decoration-none" href="#">
+                <%= data.name %>
+              </a>
+            </div>
+          </div>
+          <div class="figure-caption">
+            <div class="text-right">
+              $ 9.99 / night
+            </div>
+          </div>
+        </div>
+        <% if(!currentUser){ %>
+        <a href="/login" class="my-3 mx-3 btn btn-sm btn-success">
+          Login to Edit
+        </a>
+        <% } else { %> <% if(data.author.id.equals(currentUser._id)){ %>
+        <a
+          href="/campgrounds/<%= data._id %>/edit"
+          class="my-3 mx-3 btn btn-sm btn-success"
+        >
+          Edit Post
+        </a>
+        <form
+          class="d-inline-block"
+          action="/campgrounds/<%= data._id %>?_method=DELETE"
+          method="POST"
+        >
+          <button type="submit" class="my-3 mx-3 btn btn-sm btn-outline-danger">
+            Delete
+          </button>
+        </form>
+        <% } %> <% } %>
+
+        <div>
+          <p class="my-3 px-3">
+            <%= data.description %>
+          </p>
+          <p class="my-3 px-3">
+            <em>Posted by : <%= data.author.username %></em>
+          </p>
+        </div>
+      </div>
+      <% if(data.comments[0]){ %>
+      <div class="mt-2">
+        <a
+          href="/campgrounds/<%= data._id %>/comments/new"
+          class="btn btn-sm btn-block btn-danger d-inline-block"
+        >
+          Add a Comment
+        </a>
+      </div>
+      <% } %>
+      <div class="bg-light my-2 rounded-lg p-2 border">
+        <h4 class="my-3">Comments :</h4>
+        <% if(!data.comments[0]){ %>
+        <p class="text-center">No comments yet.</p>
+        <a
+          href="/campgrounds/<%= data._id %>/comments/new"
+          class="btn btn-sm btn-block btn-danger d-inline-block"
+        >
+          Add a first comment?
+        </a>
+        <% } else { %> <% data.comments.forEach(function(comment){ %>
+
+        <strong>
+          <%= comment.author.username %>
+        </strong>
+        <em> wrote : </em>
+        <p class="ml-3">
+          <%= comment.text %>
+        </p>
+        <div>
+          <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+          <a
+            class="btn btn-sm btn-info"
+            href="/campgrounds/<%= data._id %>/comments/<%= comment._id %>/edit"
+          >
+            Edit
+          </a>
+          <form
+            action="/campgrounds/<%= data._id %>/comments/<%= comment._id %>?_method=DELETE"
+            class="d-inline-block"
+            method="POST"
+          >
+            <button type="submit" class="btn btn-sm btn-outline-danger">
+              Delete
+            </button>
+          </form>
+          <% } %>
+        </div>
+        <hr />
+
+        <% }); } %>
+      </div>
+    </div>
+  </div>
 </div>
 
 <% include ../partials/footer.ejs %>
