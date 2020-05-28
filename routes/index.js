@@ -6,7 +6,7 @@ const User = require("../models/user");
 const passport = require("passport");
 
 router.get("/", (req, res) => {
-  res.render("landing", { title: "YelpCamp Home" });
+  res.render("landing", { title: "Home | YelpCamp" });
 });
 
 // ============
