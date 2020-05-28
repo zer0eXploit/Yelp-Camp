@@ -9,8 +9,11 @@ body {
   padding-top: 30vh;
 }
 
-#landing-header h1 {
+#landing-header h1 span {
   color: #fff;
+  background-color: #000;
+  opacity: 0.6;
+  padding: 1.2rem;
 }
 
 .cb-slideshow {
