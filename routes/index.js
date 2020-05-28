@@ -18,7 +18,7 @@ router.get("/register", (req, res) => {
 
 router.post("/register", (req, res) => {
   let newUser = new User({
-    username: req.body.username
+    username: req.body.username,
   });
   User.register(newUser, req.body.password, (err, user) => {
     if (err) {
@@ -43,7 +43,7 @@ router.post(
   passport.authenticate("local", {
     successFlash: "Welcome",
     successRedirect: "/campgrounds",
-    failureRedirect: "/login"
+    failureRedirect: "/login",
   })
 );
 

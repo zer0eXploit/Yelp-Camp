@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", middleWare.isLoggedIn, async (req, res) => {
-  const { campName, url, description, location } = req.body;
+  const { name, url, description, location } = req.body;
   const { _id, username } = req.user;
 
   const author = {
@@ -28,7 +28,7 @@ router.post("/", middleWare.isLoggedIn, async (req, res) => {
 
   try {
     const addedCampInfo = await Campground.create({
-      name: campName,
+      name: name,
       imageUrl: url,
       description: description,
       location: location.replace(",", " "),
@@ -55,10 +55,16 @@ router.get("/:id", async (req, res) => {
     const foundCampGround = await Campground.findById(id)
       .populate("comments")
       .exec();
-    res.render("campground/campGroundInfo", {
-      title: "CampDetails",
-      data: foundCampGround,
-    });
+    if (foundCampGround) {
+      res.render("campground/campGroundInfo", {
+        title: "CampDetails",
+        data: foundCampGround,
+      });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Hey! There is no such camp ground!", status: 404 });
+    }
   } catch (error) {
     console.log(error.message);
     req.flash("error", "Something went wrong on our server!");
@@ -73,10 +79,16 @@ router.get(
   async (req, res) => {
     try {
       const camp = await Campground.findById(req.params.id);
-      res.render("campground/editCamp", {
-        title: `Edit ${camp.name}`,
-        data: camp,
-      });
+      if (camp) {
+        res.render("campground/editCamp", {
+          title: `Edit ${camp.name}`,
+          data: camp,
+        });
+      } else {
+        res
+          .status(404)
+          .json({ message: "Hey! There is no such camp ground!", status: 404 });
+      }
     } catch (error) {
       console.log(error.message);
       req.flash("error", "Something went wrong on our server!");
@@ -86,11 +98,11 @@ router.get(
 );
 
 router.put("/:id", middleWare.checkCampgroundOwnership, async (req, res) => {
-  const { campName, imageUrl, description, location } = req.body;
+  const { name, imageUrl, description, location } = req.body;
 
   try {
     const updatedCamp = await Campground.findByIdAndUpdate(req.params.id, {
-      name: campName,
+      name: name,
       imageUrl: imageUrl,
       description: description,
       location: location.replace(",", " "),

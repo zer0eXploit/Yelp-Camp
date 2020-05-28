@@ -8,10 +8,16 @@ const Comment = require("../models/comment");
 router.get("/new", middleWare.isLoggedIn, async (req, res) => {
   try {
     const foundCamp = await Campground.findById(req.params.id);
-    res.render("comment/newComment", {
-      title: "Create a New Comment",
-      id: foundCamp._id,
-    });
+    if (foundCamp) {
+      res.render("comment/newComment", {
+        title: "Create a New Comment",
+        id: foundCamp._id,
+      });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Hey! There is no such camp ground!", status: 404 });
+    }
   } catch (error) {
     console.log(error.message);
     req.flash("error", "Cannot find the campground!");
@@ -27,7 +33,6 @@ router.post("/", middleWare.isLoggedIn, async (req, res) => {
       username: req.user.username,
     },
   };
-  console.log(userComment);
   try {
     const campGround = await Campground.findById(req.params.id);
     if (campGround) {
@@ -51,12 +56,18 @@ router.get(
   async (req, res) => {
     try {
       const foundComment = await Comment.findById(req.params.comment_id);
-      res.render("comment/edit", {
-        title: "Edit Comment",
-        id: req.params.id,
-        comment_id: req.params.comment_id,
-        comment: foundComment,
-      });
+      if (foundComment) {
+        res.render("comment/edit", {
+          title: "Edit Comment",
+          id: req.params.id,
+          comment_id: req.params.comment_id,
+          comment: foundComment,
+        });
+      } else {
+        res
+          .status(404)
+          .json({ message: "Hey! There is no such camp ground!", status: 404 });
+      }
     } catch (error) {
       req.flash("error", "Sorry something went wrong!");
       res.redirect("back");

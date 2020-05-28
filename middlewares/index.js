@@ -3,7 +3,7 @@ const Campground = require("../models/campground");
 
 const middleWareObject = {};
 
-middleWareObject.isLoggedIn = function(req, res, next) {
+middleWareObject.isLoggedIn = function (req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   } else {
@@ -12,7 +12,7 @@ middleWareObject.isLoggedIn = function(req, res, next) {
   }
 };
 
-middleWareObject.loggedIn = function(req, res, next) {
+middleWareObject.loggedIn = function (req, res, next) {
   if (req.isAuthenticated()) {
     req.flash("success", "You have already been logged in! No need for that!");
     return res.back();
@@ -21,13 +21,12 @@ middleWareObject.loggedIn = function(req, res, next) {
   }
 };
 
-middleWareObject.checkCommentOwnership = function(req, res, next) {
+middleWareObject.checkCommentOwnership = function (req, res, next) {
   if (req.isAuthenticated()) {
     Comment.findById(req.params.comment_id, (err, foundComment) => {
       if (err) res.redirect("back");
       else {
         if (foundComment.author.id.equals(req.user._id)) {
-          req.flash("success", "Comment Deleted!");
           next();
         } else {
           res.redirect("back");
@@ -40,7 +39,7 @@ middleWareObject.checkCommentOwnership = function(req, res, next) {
   }
 };
 
-middleWareObject.checkCampgroundOwnership = function(req, res, next) {
+middleWareObject.checkCampgroundOwnership = function (req, res, next) {
   if (req.isAuthenticated()) {
     Campground.findById(req.params.id, (err, foundCampground) => {
       if (err) res.redirect("back");
